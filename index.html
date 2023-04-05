@@ -5,6 +5,7 @@
 	<title>调试界面显示信息</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
 	<style type="text/css">
 
 	</style>
@@ -12,7 +13,11 @@
 <body>
 本站为GitHub页面根主页<br />
 你可以使用域名HtmlPages.xuqingkai.net访问
-	
+<script type="text/javascript">
+	$.get('https://mall.jinqiaochuanmei.com/api/v1/page/banner/index',function(res){
+		window.alert(res.data.length);
+	},'json');
+</script>
 	
 <script>
 console.log("%c 徐霞客工作室 %chttp://www.400537.com",'font-family:"YaHei";color:#f00;font-size:30px;','font-size:30px;');
