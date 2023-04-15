@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>跨域测试</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+	<style type="text/css">
+
+	</style>
+</head>
+<body>
+<h1>跨域请求，如果正常会显示弹窗。</h1>
+<script type="text/javascript">
+	$.get('https://mall.jinqiaochuanmei.com/api/v1/page/banner/index',function(res){
+		window.alert(res.data.length);
+	},'json');
+</script>
+</body>
+</html>
