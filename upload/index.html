@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>upload</title>
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link href="./css/style.css" rel="stylesheet" />
+    <style type="text/css">
+    </style>
+</head>
+<body>
+    <form action="../php/upload.php" method="post" target="_blank" id="form" enctype="multipart/form-data">
+        name1:<input type="text" name="name1" value="a1" /><br />
+        name1:<input type="text" name="name1" value="b1" /><br />
+        name2:<input type="text" name="name2[]" value="a2"><br />
+        name2:<input type="text" name="name2[]" value="b2"><br />
+        file1:<input type="file" name="file1" /><br />
+        file1:<input type="file" name="file1" /><br />
+        file2[]:<input type="file" name="file2[]" /><br />
+        file2[]:<input type="file" name="file2[]" ><br />
+    <input type="submit" value="上传" />
+    </form>
+    <p>设置提交地址为：<input type="text" id="action" /><input type="button" value="设置" onclick="set()" /></p>
+    <script type="text/javascript">
+    document.getElementById('action').value=document.getElementById('form').getAttribute('action');
+    function set(){
+        document.getElementById('form').action=document.getElementById('action').value;
+    }
+    </script>
+</body>
+</html>
