@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<title>在线支付</title>
+	<style type="text/css">
+	body{text-align:center}
+	</style>
+</head>
+<body>
+<h1>正在拉起支付。。。</h1>
+<div id="qrimg"></div>
+<script type="text/javascript">
+    var request = {}, search = window.location.search.replace('?', '').replace(/\+/g, '%20').split('&');
+    for(var i in search){var kv=search[i].split('=');request[kv[0]]=decodeURIComponent(kv[1]);}
+    if(navigator.userAgent.indexOf('MicroMessenger')>0){
+		document.getElementsByTagName('title')[0].innerHTML = '微信公众号支付';
+		function weixinPayJSAPI() {
+			WeixinJSBridge.invoke('getBrandWCPayRequest', request['json'] , function(res){
+				if(res.err_msg == 'get_brand_wcpay_request:ok'){
+					window.alert('支付完成');
+					if(request['success']){window.location.href=request['success'];}
+				}else{
+					window.alert('支付失败');
+					if(request['fail']){window.location.href=request['fail'];}
+				}
+			});
+		}
+		if(request['json']){
+			request['json']=JSON.parse(request['json']);
+			if(typeof(WeixinJSBridge) == 'undefined'){
+				if(document.addEventListener){
+					document.addEventListener('WeixinJSBridgeReady', weixinPayJSAPI, false);
+				}else if(document.attachEvent){
+					document.attachEvent('WeixinJSBridgeReady', weixinPayJSAPI);
+					document.attachEvent('onWeixinJSBridgeReady', weixinPayJSAPI);
+				}
+			}else{
+				weixinPayJSAPI();
+			}
+		}
+		else
+		{
+			window.alert('微信json参数不能为空,success、fail参数可为空');
+		}
+	}else if(navigator.userAgent.indexOf('AlipayClient')>0){
+		document.getElementsByTagName('title')[0].innerHTML = '支付宝生活号支付';
+		function alipayJSAPI() {
+			AlipayJSBridge.call('tradePay',{
+				tradeNO: request['tradeNO']
+			},function(result){
+				if(result.resultCode == '9000' || result.resultCode == '8000' || result.resultCode == '6004'){
+					window.alert('支付完成');
+					if(request['success']){window.location.href=request['success'];}
+				}else{
+					window.alert('支付失败');
+					if(request['fail']){window.location.href=request['fail'];}
+				}
+			});
+		}
+		if(request['tradeNO']){
+			if(window.AlipayJSBridge){
+				alipayJSAPI && alipayJSAPI();
+			}else{
+				document.addEventListener('AlipayJSBridgeReady', alipayJSAPI, false);
+			}
+		}else{
+			window.alert('支付宝tradeNO参数不能为空,success、fail参数可为空');
+		}
+	}else{
+		document.getElementById('qrimg').innerHTML = '<img src="/qr/?text=' + encodeURIComponent(window.location.href) + '" />'
+	}
+</script>
+</body>
+</html>
