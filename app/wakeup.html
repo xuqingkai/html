@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>手机端H5网页唤醒APP协议</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+<body onload="document.getElementById('tel1').click()">
+    <h1>拨号：tel://</h1>
+    <p><a href="tel:">调出拨号界面/a></p>
+    <p><a id="tel" href="tel:10086">调出拨号界面，并预置号码：10086</a></p>
+    
+    <h1>短信：sms:// 或 smsto://</h1>
+    <p><a href="sms:">调出发短信界面</a></p>
+    <p><a href="sms:10086;10010">调出发短信界面，并预置号码：10086,10010</a></p>
+    <p><a href="sms:10086;10010?body=test">调出发短信界面，并预置号码和内容</a></p>
+    <p><a href="sms:10086;10010&body=test">iOS系统下，调出发短信界面，并预置号码和内容</a></p>
+
+    <h1>彩信：mms://</h1>
+    <p><a href="mms:10086">mms:10086</a></p>
+    <p><a href="mmsto:10086"> mmsto:10086</a></p>
+    
+    <h1>邮件：mailto://</h1>
+    <p><a href="mailto:10000@qq.com;xxx@163.com?subject=标题&body=内容">调出发邮件界面，并预置收件人、标题、内容</a></p>
+    <p><a href="mailto:?to=&subject=标题&body=内容">调出发邮件界面，收件人留空、并预置标题、内容</a></p>
+    
+    <h1>定位商店APP：market://</h1>
+    <p><a href="market://details?id=com.tencent.mm">1，打开应用商店的微信APP</a></p>
+    <p><a href="http://market.android.com/details?id=com.tencent.mm">,2，打开应用商店的微信APP</a></p>
+
+    <h1>其他</h1>
+    <p><a href="androidamap://viewMap?sourceApplication=appname&poiname=abc&lat=22.984636&lon=113.719614&dev=0">amap</a></p>
+    <p><a href="baidumap://map/marker?location=39.918624,116.434725&title=Marker&content=makeamarker&traffic=on">baidumap</a></p>
+    <p><a href="qqmap://map/marker?marker=coord:39.892326,116.342763;title:超好吃冰激凌;addr:手帕口桥北铁路道口&referer=OB4BZ-D4W3U-B7VVO-4PJWW-6TKDJ-WPB77">qqmap</a></p>
+    
+    
+</body>
+</html>
