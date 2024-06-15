@@ -1,0 +1,17 @@
+{
+	"id":0,
+	"code":"success",
+	"message":"测试成功",
+	"data":{
+		"student_no":"02122589",
+		"real_name":"李雷雷",
+		"age":18,
+		"gender":"MALE",
+		"is_married":false,
+		"school":[
+			"徐家小学",
+			"中册初中",
+			"泗水高中"
+		]
+	}
+}
