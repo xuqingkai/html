@@ -1,0 +1,47 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>MD5</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<style type="text/css">
+		body {
+			padding: 30px;
+			font-size: 30px;
+		}
+
+		input {
+			font-size: 20px;
+			height: 24px;
+			padding: 5px;
+			width: 400px;
+		}
+	</style>
+</head>
+<body>
+	<p>加密数据：<input type="text" id="data" /></p>
+	<p>加密结果：</p>
+	<p>32位小写：<input type="text" id="lower32" /></p>
+	<p>32位大写：<input type="text" id="upper32" /></p>
+	<p>16位小写：<input type="text" id="lower16" /></p>
+	<p>16位大写：<input type="text" id="upper16" /></p>
+
+	<script src="md5.js"></script>
+	<script type="text/javascript">
+		var data = document.getElementById('data');
+		data.focus();
+		data.onkeyup = function () {
+			var data = this.value;
+			var hash = CryptoJS.MD5(data) + '';
+			document.getElementById('lower32').value = hash.toLowerCase();
+			document.getElementById('upper32').value = hash.toUpperCase();
+			document.getElementById('lower16').value = hash.substr(8, 16).toLowerCase();
+			document.getElementById('upper16').value = hash.substr(8, 16).toUpperCase();
+		};
+		var input = document.getElementsByTagName('input');
+		for (var i in input) {
+			input[i].onclick = function () { this.select(); }
+		};
+	</script>
+</body>
+</html>
