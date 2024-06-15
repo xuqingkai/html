@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>QQ真实头像</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+<body>
+	<img id="img" src="//q1.qlogo.cn/g?b=qq&nk=12345&s=100" />
+	<br />
+	QQ号：<input type="text" id="qq" />
+	<br />
+	<input type="button" value="设置" onclick="setQQ()" />
+	<script>
+	function setQQ(){
+		document.getElementById('img').src='//q1.qlogo.cn/g?b=qq&nk='+document.getElementById('qq').value + '&s=100';
+	}
+	</script>
+</body>
+</html>
