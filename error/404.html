@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>网页找不到</title>
+    <title>404</title>
     <style>
          body{background:#def0f0;text-align: center;font-size: 18px;margin-top: 100px;font-family: Microsoft Yahei;}
          div{font-size:136px;font-style: italic;color:#79c3c0;font-weight: 600;}
@@ -12,20 +12,6 @@
 </head>
 <body>
 	<div>404<br />您访问的页面<br />找不到了</div>
-	<p>你可以 <a href="javascript:window.history.back();">返回上一页</a> 或者 <a href="/">回到首页</a><br /><br /><span id="s"></span> 秒后自动返回</p>
-	<script type="text/javascript">
-		(function(id,second){
-			var obj = document.getElementById(id);
-			obj.innerHTML = second;
-			window.setInterval(function(){
-				if(second <= 0){
-					document.referrer ? window.history.back() : window.location.href = '/';
-				}else{
-					second--;
-					obj.innerHTML = second;
-				}
-			}, 1000);
-		})('s',5);
-	</script>
+	<p>你可以 <a href="javascript:window.history.back();">返回上一页</a> 或者 <a href="/">回到首页</a><br /><br /></p>
 </body>
 </html>
