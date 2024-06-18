@@ -1,56 +1,24 @@
-<%@Page Language="C#"%>
 <!DOCTYPE html>
 <html>
 <head>
 	<meta charset="utf-8">
 	<title>收款码</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit/dist/css/uikit.min.css">
+	<script src="https://cdn.jsdelivr.net/npm/uikit/dist/js/uikit.min.js"></script>
 </head>
 <body>
-<%
-string amount = Request.QueryString.ToString();
-string host = Request.Url.Host.ToLower();
-string userAgent = System.Web.HttpContext.Current.Request.ServerVariables["HTTP_USER_AGENT"] + "";
-	
-	Response.Write("<div style=\"text-align:center\">");
-
-	Response.Write("<img src=\"/qr/?text=" + System.Web.HttpUtility.UrlEncode("HTTPS://QR.ALIPAY.COM/FKX06191SJQZMZFY6HJQD6") + "\" />");
-	Response.Write("<h1><a href=\"HTTPS://QR.ALIPAY.COM/FKX06191SJQZMZFY6HJQD6\">↑支付宝↑</a></h1>");
-
-	Response.Write("<img src=\"/qr/?text=" + System.Web.HttpUtility.UrlEncode("https://payapp.weixin.qq.com/qr/AQFIUYr75srb2gDom7HVdbSq") + "\" />");
-	Response.Write("<h1><a href=\"weixin://\">↑微信、云闪付↑</a></h1>");
-
-	Response.Write("</div>");
-
-
-if(amount != null && amount.Length>0){%>
-	<style type="text/css">
-	#bg{width:100%;height:2500px;background:#ccc;position:absolute;top:0;right:0;bottom:0;left:0;opacity:0.8;}
-	#alert{border:1px solid #ccc;background:#fff;position:absolute;top:20px;left:20px;right:20px;text-align:center;padding:20px 0;}
-	#btn{background:#000;border-radius:5px;border:1px solid #00;color:#fff;padding:5px 20px;}
-	</style>
-	<div id="bg">&nbsp;</div>
-	<div id="alert">
-		金额【<%=amount%>】已复制到剪贴板<br /><br />
-		请在付款界面粘贴使用<br /><br />
-		切勿更改，否则无法到账！！！！！<br /><br />
-		<button id="btn" data-clipboard-text="<%=amount%>">确定</button>
-	</div>
-	<script src="./clipboard.min.js"></script>
-	<script>
-		document.getElementById('btn').addEventListener('click', function(){
-			document.getElementById('alert').style.display='none';
-			document.getElementById('bg').style.display='none';
-			new ClipboardJS('#btn');
-		}, false);
-	</script>
-<%}%>
-<script>
-	document.getElementById('showUserAgent').addEventListener('click', function(){
-		document.getElementById('userAgent').style.display='';
-	}, false);
-</script>
+	<div class="uk-margin-medium-top">
+        <ul class="uk-flex-center" uk-tab>
+            <li class="uk-active"><a href="#">微信</a></li>
+            <li><a href="#">支付宝</a></li>
+            <li><a href="#">云闪付</a></li>
+        </ul>
+        <div class="uk-switcher uk-margin uk-text-center">
+            <div>1<img src="./weixin.png" alt="s" /></div>
+            <div>2<img src="./alipay.png" /></div>
+            <div>3<img src="./unionpay.png" /></div>
+        </div>
+    </div>
 </body>
 </html>
-
-
