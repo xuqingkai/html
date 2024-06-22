@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+ <head>
+    <meta charset="UTF-8">
+    <title>WebBluetooth</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=100, initial-scale=1.0">
+</head>
+<body>
+    <button onclick="connect()" class="btn">连接</button>
+    <div id="data"></div>
+    <div id="log"></div>
+    <script type="text/javascript" >
+    function connect(){
+        readbluetooth()
+        .then(v => console.log(v))
+        .catch(e => console.log(e));
+    }
+    async function readbluetooth(){
+        try{
+            let device = await navigator.bluetooth.requestDevice({    
+                filters: [{namePrefix : 'BP'}],
+                optionalServices: ["0000fff0-0000-1000-8000-00805f9b34fb"]
+            });
+            device.addEventListener('gattserverdisconnected', (event)=>{
+                let device = event.target;
+                let msg = '设备: '+device.name+' 已经断开连';
+                console.log(msg);
+                document.getElementById('log').innerHTML += msg + '<br />';
+            });//监听设备断开连接
+
+            let server = await device.gatt.connect();
+            let service = await server.getPrimaryService('0000fff0-0000-1000-8000-00805f9b34fb');//这里需要服务UUID 还是可以提供完整的蓝牙UUID或简短的16位或32位形式
+            let services = await server.getPrimaryServices();
+            let characteristics = await service.getCharacteristics();//获取设备所有信息特征值
+            let characteristicNotify = await service.getCharacteristic('0000fff1-0000-1000-8000-00805f9b34fb');//这里需要读的特征值UUID 还是可以提供完整的蓝牙UUID或简短的16位或32位形式
+            //开始监听
+            characteristicNotify.addEventListener('characteristicvaluechanged', (e)=>{//监听设备端的操作 获取到值之后再解析
+                let data = ab2hex(e.target.value.buffer);
+                //document.getElementById('log').innerHTML += data + '<br />';
+                if (data == "aa80020301010001") {
+                    document.getElementById('log').innerHTML += '连接回应<br />';
+                } else if (data.indexOf("aa80020404") == 0) {
+                    var batteryLevel = parseInt(data.substr(12,4), 16);
+                   document.getElementById('log').innerHTML += '收到电量数据：' + batteryLevel + '<br />';
+                } else if (data.indexOf("aa80020f0106") == 0) {//最终测量值
+                    var sbp = parseInt(data.substr(28, 2), 16);//收缩压
+                    var dbp = parseInt(data.substr(32, 2), 16);//舒张压
+                    var pr = parseInt(data.substr(36, 2), 16);//脉搏
+                    document.getElementById('data').innerText = sbp + '/' + dbp + '/' + pr;
+                } else if (data.indexOf("aa8002080105") == 0) { //实时压力值
+                    var bp = parseInt(data.substr(20,2), 16);
+                    document.getElementById('data').innerText = bp;
+                } else if (data.indexOf("aa8002030107") == 0) { //测量失败
+                    document.getElementById('log').innerHTML += '测量错误<br />';
+                }else{
+                    document.getElementById('data').innerText = data;
+                }
+                console.log('e.target.value:',msg);
+
+            });
+            await characteristicNotify.startNotifications();
+            let characteristicStart = await service.getCharacteristic('0000fff2-0000-1000-8000-00805f9b34fb');
+            await characteristicStart.writeValue(string2buffer('cc80020301020002'));
+        }catch(e){
+            document.getElementById('log').innerTinnerHTMLext += e + '<br />';
+        }
+        finally{}
+    }
+    function string2buffer(str) {
+        let val = "";
+        if (!str) return;
+        let length = str.length;
+        let index = 0;
+        let array = [];
+        while (index < length) {
+            array.push(str.substring(index, index + 2));
+            index = index + 2;
+        }
+        val = array.join(",");
+        // 将16进制转化为ArrayBuffer
+        return new Uint8Array(val.match(/[\da-f]{2}/gi).map(function (h) {
+        return parseInt(h, 16);
+        })).buffer
+    }
+    function ab2hex(buffer) {
+        const hexArr = Array.prototype.map.call(
+            new Uint8Array(buffer),
+            function (bit) {
+                return ('00' + bit.toString(16)).slice(-2);
+            }
+        )
+        return hexArr.join('');
+    }    
+    </script>
+</body>
+</html>
