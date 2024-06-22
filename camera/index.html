@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>H5摄像头</title>
+</head>
+<body>
+<div class="show-picture" id="picture_div" >
+	<video id="video" class="picture-video" width="360" height="360" autoplay></video>
+	<canvas id="canvas" class="picture-canvas" width="360" height="360"></canvas>
+	<img id="headSculpture">
+	<button type="button" class="layui-btn layui-btn-normal snap" id="snap">拍照</button>
+    
+    <script>
+    //开启摄像头
+    var MediaStreamTrack;
+    var isPhotograph=true;
+    function getMedia() {
+        var constraints = {
+            video: {width: 360, height: 360},
+            audio: false,
+        };
+        //获得video摄像头区域
+        var video = document.getElementById("video");
+        //这里介绍新的方法，返回一个 Promise对象
+        // 这个Promise对象返回成功后的回调函数带一个 MediaStream 对象作为其参数
+        // then()是Promise对象里的方法
+        // then()方法是异步执行，当then()前的方法执行完后再执行then()内部的程序
+        // 避免数据没有获取到
+        var promise = navigator.mediaDevices.getUserMedia(constraints);
+        promise.then(function (MediaStream) {
+        MediaStreamTrack=typeof MediaStream.stop==='function'?MediaStream:MediaStream.getTracks()[1];
+        video.srcObject = MediaStream;
+             video.play();
+             isPhotograph = false
+         });
+     }
+    //拍照
+    function takePhoto() {
+        if(isPhotograph){
+            getMedia();
+            clearCanvas();
+            isPhotograph=false;
+        }else{
+            //获得Canvas对象
+            var video = document.getElementById("video");
+            let canvas = document.getElementById("canvas");
+            var ctx = canvas.getContext('2d');
+            ctx.drawImage(video, 0, 0,360, 360);
+            MediaStreamTrack && MediaStreamTrack.stop();
+            imgData = document.getElementById("canvas").toDataURL("image/jpeg");
+            isPhotograph=true;
+        }
+    }
+
+    document.getElementById("snap").addEventListener("click", takePhoto);
+    /**
+     * @description 重置canvas（清除照片）
+     * @version 1.0
+     * @returns
+     */
+    function clearCanvas() {
+        var c = document.getElementById("canvas");
+        var cxt = c.getContext("2d");
+        c.height = c.height;
+    }
+
+    </script>
+</div>
+</html>
