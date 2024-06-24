@@ -8,6 +8,7 @@
     <style type="text/css">
         input{padding:5px;line-hieght:24px;font-size:16px;}
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@1/dist/jquery.min.js"></script>
 </head>
 <body>
     <form action="" method="post" target="_blank" id="form" enctype="multipart/form-data">
@@ -15,7 +16,6 @@
         <input type="submit" value="上传" />
     </form>
     <script type="text/javascript">document.getElementById('form').action=window.location.search.replace('?','');</script>
-
     <script type="text/javascript">
         $('form').submit(function(){
             var formData = new FormData(this);
