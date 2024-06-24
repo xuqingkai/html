@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>upload</title>
+    <style type="text/css">
+        input{padding:5px;line-hieght:24px;font-size:16px;}
+    </style>
+</head>
+<body>
+    <form action="" method="post" target="_blank" id="form" enctype="multipart/form-data">
+        <p>file：<input type="file" name="file" /></p>
+        <input type="button" value="上传" onclick="upload()" />
+    </form>
+    <script type="text/javascript">document.getElementById('form').action=window.location.search.replace('?','');</script>
+    <script type="text/javascript">
+        async function upload(){
+            const input = document.querySelector('input[type="file"]');
+            const form = document.querySelector('form')
+            const formData = new FormData(form);
+            formData.append('photo', input.files[0]);
+            formData.append('user', 'foo');
+
+            try {
+                let response = await fetch(document.getElementById('form').action, {
+                    method: 'POST',
+                    headers: {
+                        'User-Agent': 'AppBrowser'
+                    }, 
+                    body: formData
+                });
+                let json = await response.json();
+                window.alert(json);
+            } catch (error) {
+                console.log('Request Failed', error);
+            }
+        }
+    </script>
+</body>
+</html>
