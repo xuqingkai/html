@@ -15,7 +15,7 @@
 </head>
 <body>
 	<div class="uk-container">
-	    <div class="uk-margin-medium-top" id="links">
+	    <div class="uk-margin-medium-top">
 	        <a data-shareId="6684451d30cd9f3923d7b53b" class="uk-button-primary">130****8944</a>
 	        <a data-shareId="6684426030cd9f3923d7b508" class="uk-button-default">130****2811</a>
 	        <a data-shareId="668444c330cd9f3923d7b536" class="uk-button-primary">131****6350</a>
@@ -25,9 +25,9 @@
 
     </div>
     <script>
-        $('#links a').click(function(){
+        $('a').click(function(){
             if($(this).hasClass('delete')){
-                if($(this).text()=='16653768471'){ $('#links a').removeClass('delete'); }
+                if($(this).is('a:last')){ $('a').removeClass('delete'); }
                 return false;
             }else{
                 $(this).addClass('delete');
