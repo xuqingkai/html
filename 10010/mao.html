@@ -28,7 +28,6 @@
         $('a').click(function(){
             if($(this).hasClass('delete')){
                 if($(this).is('a:last')){ $('a').removeClass('delete'); }
-                return false;
             }else{
                 $(this).addClass('delete');
             }
