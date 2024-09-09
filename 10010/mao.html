@@ -14,29 +14,23 @@
 	</style>
 </head>
 <body>
+    <div class="uk-text-center">2024-09-05 11:44:16</div>
 	<div class="uk-container">
-	    <div class="uk-margin-medium-top">
-	        <a data-shareId="6684451d30cd9f3923d7b53b" class="uk-button-primary">130****8944</a>
-	        <a data-shareId="6684426030cd9f3923d7b508" class="uk-button-default">130****2811</a>
-	        <a data-shareId="668444c330cd9f3923d7b536" class="uk-button-primary">131****6350</a>
-	        <a data-shareId="6684442230cd9f3923d7b533" class="uk-button-default">156****4347</a>
-	        <a data-shareId="6684418c30cd9f3923d7b4de" class="uk-button-danger">166****8471</a>
-        </div>
-
+        <a data-shareId="6684451d30cd9f3923d7b53b" class="uk-button-danger">130****8944</a>
+        <a data-shareId="6684426030cd9f3923d7b508" class="uk-button-default">130****2811</a>
+        <a data-shareId="668444c330cd9f3923d7b536" class="uk-button-primary">131****6350</a>
+        <a data-shareId="6684442230cd9f3923d7b533" class="uk-button-default">156****4347</a>
+        <a data-shareId="6684418c30cd9f3923d7b4de" class="uk-button-primary">166****8471</a>
     </div>
     <script>
         $('a').click(function(){
-            if($(this).hasClass('delete')){
-                if($(this).is('a:last')){
-			$('a').removeClass('delete'); 
-			return false;
-		}
-            }else{
-                $(this).addClass('delete');
-            }
+            if($(this).hasClass('delete') && $(this).index()==0){  $('a').removeClass('delete'); }
+            $(this).addClass('delete');
         }).each(function(){
-            $(this).attr('href', 'chinaunicom://?open=%7B%22openType%22:%22url%22,%22title%22:%22%22,%22openUrl%22:%22https://edop_unicom?appid=edop_unicom_acbc0fb4&publishType=2&path=index.html#/sharePage?shareId='+$(this).attr('data-shareId')+'%22,%22actCode%22:%22%22%7D').addClass('uk-button uk-width-1-1 uk-button-large uk-text-lead uk-padding-small');
+            //$(this).attr('href', 'chinaunicom://?open=%7B%22openType%22:%22url%22,%22title%22:%22%22,%22openUrl%22:%22https://edop_unicom?appid=edop_unicom_acbc0fb4&publishType=2&path=index.html#/sharePage?shareId='+$(this).attr('data-shareId')+'%22,%22actCode%22:%22%22%7D').addClass('uk-button uk-width-1-1 uk-button-large uk-text-lead uk-padding-small');
+            $(this).attr('href', 'chinaunicom://?open='+encodeURIComponent('{"openType":"url","title":"","openUrl":"https://edop_unicom?appid=edop_unicom_acbc0fb4&publishType=2&path=index.html#/sharePage?shareId='+$(this).attr('data-shareId')+'","actCode":""}')).addClass('uk-button uk-width-1-1 uk-button-large uk-text-lead uk-padding-small');
         });
+        //%7B%22openType%22%3A%22url%22%2C%22title%22%3A%22%22%2C%22openUrl%22%3A%22https%3A%2F%2Fedop_unicom%3Fappid%3Dedop_unicom_acbc0fb4%26publishType%3D2%26path%3Dindex.html%23%2FsharePage%3FshareId%3D%22%2C%22actCode%22%3A%22%22%7D
     </script>
 </body>
 </html>
