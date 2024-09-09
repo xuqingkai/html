@@ -27,10 +27,12 @@
             if($(this).hasClass('delete') && $(this).index()==0){  $('a').removeClass('delete'); }
             $(this).addClass('delete');
         }).each(function(){
-            //$(this).attr('href', 'chinaunicom://?open=%7B%22openType%22:%22url%22,%22title%22:%22%22,%22openUrl%22:%22https://edop_unicom?appid=edop_unicom_acbc0fb4&publishType=2&path=index.html#/sharePage?shareId='+$(this).attr('data-shareId')+'%22,%22actCode%22:%22%22%7D').addClass('uk-button uk-width-1-1 uk-button-large uk-text-lead uk-padding-small');
             $(this).attr('href', 'chinaunicom://?open='+encodeURIComponent('{"openType":"url","title":"","openUrl":"https://edop_unicom?appid=edop_unicom_acbc0fb4&publishType=2&path=index.html#/sharePage?shareId='+$(this).attr('data-shareId')+'","actCode":""}')).addClass('uk-button uk-width-1-1 uk-button-large uk-text-lead uk-padding-small');
         });
-        //%7B%22openType%22%3A%22url%22%2C%22title%22%3A%22%22%2C%22openUrl%22%3A%22https%3A%2F%2Fedop_unicom%3Fappid%3Dedop_unicom_acbc0fb4%26publishType%3D2%26path%3Dindex.html%23%2FsharePage%3FshareId%3D%22%2C%22actCode%22%3A%22%22%7D
+        $('div:first').html(function(){
+            var arr=[139,150,158,187,1391,188,136,1549];
+            return '【'+arr[(new Date().getDate()-1)%arr.length]+'】'+new Date().toLocaleTimeString();
+        });
     </script>
 </body>
 </html>
