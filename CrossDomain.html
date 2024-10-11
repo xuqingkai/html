@@ -13,8 +13,8 @@
 <body>
 <h1>跨域请求，如果正常会显示弹窗。</h1>
 <script type="text/javascript">
-	$.get('https://mall.jinqiaochuanmei.com/api/v1/page/banner/index',function(res){
-		window.alert(res.data.length);
+	$.get('https://apis.map.qq.com/ws/weather/v1/',function(res){
+		window.alert(res.message);
 	},'json');
 </script>
 </body>
