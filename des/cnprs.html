@@ -1,0 +1,49 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+	<meta charset="utf-8">
+	<title>注册机</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style type="text/css">
+        input{font-size:14px;padding:5px;margin-top:10px;width:300px;}
+        code{color:#f00;padding:10px;border:1px solid #ccc}
+    </style>
+</head>
+<body>
+<form>
+单位：<input type="text" name="org" placeHolder="可为空" value="乡镇卫生院" /><br />
+日期：<input type="text" name="date" placeHolder="格式为yyyy-MM-dd" title="鼠标滚动可修改日期" readonly /><br />
+设备：<input type="text" name="code" placeHolder="可为空" /><br />
+<input type="button" value="提交" id="button" />
+</form><hr /><div id="result"></div>
+<script src="crypto-js.js"></script>
+<script type="text/javascript">
+	var wordArray=CryptoJS.lib.WordArray.create([1886548800, 842019378], 8);//保证你猜不出来
+	const cfg={mode: CryptoJS.mode.CBC,iv:wordArray,padding: CryptoJS.pad.Pkcs7};
+	let org=document.querySelector('input[name="org"]');
+	const orgValue=org.value;
+	let date=document.querySelector('input[name="date"]');
+	date.value=new Date((new Date()).getTime()+365*24*60*60*1000).toISOString().substr(0,10);
+	let code=document.querySelector('input[name="code"]');
+	document.querySelector('#button').addEventListener('click',function(){
+		let text=org.value+date.value.replace('-','').replace('-','');
+		if(org.value!=orgValue && org.value!=''){ text+='_'+(code.value!=''?code.value:'0'); }
+		var encrypt = CryptoJS.DES.encrypt(text, wordArray, cfg).toString(); 
+		var decrypt = CryptoJS.DES.decrypt(encrypt, wordArray, cfg).toString(CryptoJS.enc.Utf8);
+		document.querySelector('#result').innerHTML=org.value+'的注册码为<br /><br /><code title="'+decrypt+'">'+encrypt+'</code>';
+	});
+	date.addEventListener('wheel',function(event){
+		let v=parseInt(date.value.replace('-','').replace('-',''));
+		if(v>10000000 && v<99999999){
+			if(event.deltaY>0){
+				v-=100;if(v%10000<100){v=v-10000+1200;}
+			}else{
+				v+=100;if(v%10000>1300){v=v+10000-1200;}
+			}
+			v+='';
+			date.value=v.substr(0,4)+'-'+v.substr(4,2)+'-'+v.substr(6,2);
+		}
+	});
+</script>
+</body>
+</html>

@@ -1,38 +1,71 @@
+
 <!DOCTYPE html>
 <html lang="zh-cmn-Hans">
 <head>
 	<meta charset="utf-8">
-	<title>联通养猫</title>
+	<title>联通猫舍</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit/dist/css/uikit.min.css" />
-	<script src="https://cdn.jsdelivr.net/npm/uikit/dist/js/uikit.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/uikit/dist/js/uikit-icons.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
 	<style type="text/css">
-	    .uk-tab>*>a{font-size:1.0rem;}
-	    .delete,.delete:hover{text-decoration: line-through;}
+	    input{font-size:1.0rem;height:40px;margin-top:10px;width:50%;}
+	    button{height:40px;margin-top:10px;width:25%;}
+        #list{display:flex;flex-wrap:wrap;border:1px solid #ccc;}
+        #list a{display:block;box-sizing:border-box;font-size:24px;line-height:36px; width:50%;border:1px solid #ccc;padding:15px;background-color: #0f7ae5;color:#333;text-decoration: none;}
+        #list a:hover{text-decoration: underline;}
+
 	</style>
 </head>
 <body>
-    <div class="uk-text-center">2024-09-05 11:44:16</div>
-	<div class="uk-container">
-        <a data-shareId="6684451d30cd9f3923d7b53b" class="uk-button-danger">130****8944</a>
-        <a data-shareId="6684426030cd9f3923d7b508" class="uk-button-default">130****2811</a>
-        <a data-shareId="668444c330cd9f3923d7b536" class="uk-button-primary">131****6350</a>
-        <a data-shareId="6684442230cd9f3923d7b533" class="uk-button-default">156****4347</a>
-        <a data-shareId="6684418c30cd9f3923d7b4de" class="uk-button-primary">166****8471</a>
-    </div>
+    <div id="list"></div>
+    <input type="text" id="name" placeholder="备注名称" autocomplete="off" /><br />
+    <input type="text" id="url" placeholder="分享地址，留空删除" autocomplete="off" /><br />
+    <button type="button">提交</button><br />
+    分享到微信，在微信里打开该链接，再点右上角三个点，最后点复制链接。
     <script>
-        $('a').click(function(){
-            if($(this).hasClass('delete') && $(this).index()==0){  $('a').removeClass('delete'); }
-            $(this).addClass('delete');
-        }).each(function(){
-            $(this).attr('href', 'chinaunicom://?open='+encodeURIComponent('{"openType":"url","title":"","openUrl":"https://edop_unicom?appid=edop_unicom_acbc0fb4&publishType=2&path=index.html#/sharePage?shareId='+$(this).attr('data-shareId')+'","actCode":""}')).addClass('uk-button uk-width-1-1 uk-button-large uk-text-lead uk-padding-small');
+        //window.localStorage.clear();
+        document.querySelector('button').addEventListener("click", function(){
+            let name=document.querySelector('#name').value;
+            if(name.length<=0){
+                window.alert('备注名称不能为空');
+                return false;
+            }
+            if(name=='清空'){
+                window.localStorage.clear();
+            }else{
+                let url=document.querySelector('#url').value;
+                url=decodeURIComponent(url);
+                
+                if(url.indexOf('shareId=')<0){
+                    window.localStorage.removeItem(name);
+                }else{
+                    let shareId=url.substr(url.indexOf('shareId=')+8).substr(0,24);
+                    window.localStorage.setItem(name,shareId);
+                    window.location.reload(true);
+                }
+            }
+            window.location.reload(true); 
         });
-        $('div:first').html(function(){
-            var arr=[139,150,158,187,1391,188,136,1549];
-            return '【'+arr[(new Date().getDate()-1)%arr.length]+'】'+new Date().toLocaleTimeString();
-        });
+        window.localStorage.setItem('11111','2312312321321123123');
+        window.localStorage.setItem('22222','2312312321321123123');
+        window.localStorage.setItem('333333','2312312321321123123');
+        window.localStorage.setItem('444444','2312312321321123123');
+        window.localStorage.setItem('555555','2312312321321123123');
+
+
+        for (let key in window.localStorage) {
+            if (window.localStorage.hasOwnProperty(key)) {
+                let value = window.localStorage.getItem(key);
+                document.querySelector('#list').insertAdjacentHTML('beforeEnd','<a title="'+value+'" href="chinaunicom://?open='+encodeURIComponent('{"openType":"url","title":"","openUrl":"https://edop_unicom?appid=edop_unicom_acbc0fb4&publishType=2&path=index.html#/sharePage?shareId='+value+'","actCode":""}')+'">'+key+'</a><br />');
+            }
+        }
+        var a=document.querySelectorAll('#list a');
+        for(let i=0;i<a.length;i++){
+            if(i==0){a[i].style.backgroundColor='#ee395b';}
+            a[i].addEventListener('click', function(e){
+                let ele=e.target;
+                ele.style.textDecoration='line-through';
+                alert(ele.innerHTML);
+            });
+        }
     </script>
 </body>
 </html>

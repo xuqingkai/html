@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+	<meta charset="utf-8">
+	<title>联通养猫</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<style type="text/css">
+        div{display:flex;flex-wrap:wrap;border:1px solid #ccc;}
+        div a,div input{display:block;box-sizing:border-box;font-size:24px;line-height:36px; width:50%;border:1px solid #ccc;padding:15px 0;color:#333;text-decoration: none; text-align: center;}
+        div a:hover{text-decoration: underline;}
+        button{position: absolute; display: none; padding: 10px;}
+	</style>
+</head>
+<body>
+	<div>
+        <a data-shareId="680586823a2fce705b7a07b9"><br />130****8944<br /><br /></a>
+        <a data-shareId="680586aa3a2fce705b7a07d3"><br />130****2811<br /><br /></a>
+        <a data-shareId="680586c93a2fce705b7a07e8"><br />131****6350<br /><br /></a>
+        <a data-shareId="680586e73a2fce705b7a07fc"><br />156****4347<br /><br /></a>
+        <a data-shareId="680587043a2fce705b7a07ff"><br />166****8471<br /><br /></a>
+        <input type="number" placeholder="请输入索引号">
+    </div>
+    <button id="contextmenu">启用→禁用</button>
+    <script>
+        var contextA;
+        var contextmenu = document.querySelector('#contextmenu');
+        contextmenu.addEventListener('click', function(e){ if(contextA){ switchA(contextA); } });
+        var a=document.querySelectorAll('div a');
+        for(let i=0;i<a.length;i++){
+            let key='key'+i;
+            a[i].setAttribute('key',key);
+            a[i].style.backgroundColor=i==0?'#ee395b':'#0f7ae5';
+            if(window.localStorage.getItem(key)){
+                a[i].style.color=a[i].style.backgroundColor;
+                contextmenu.innerHTML='禁用→启用';
+            }
+            a[i].setAttribute('title',a[i].getAttribute('data-shareId'));
+            let url='chinaunicom://?open=%7B%22openType%22:%22url%22,%22title%22:%22%22,%22openUrl%22:%22https://edop_unicom?appid=edop_unicom_acbc0fb4&publishType=2&path=index.html#/sharePage';
+            url+='?shareId='+a[i].getAttribute['data-shareId']+'?linkType=unicomNewShare&mobileA=10010';
+            url+='&businessName=%E6%88%91%E6%AD%A3%E5%9C%A8%E5%B1%B1%E4%B8%9C%E8%81%94%E9%80%9A%E5%96%82%E5%85%BB%E7%8C%AB%E5%92%AA%E8%B5%9A%E5%A5%BD%E7%A4%BC%EF%BC%8C%E6%9D%A5%E5%96%82%E7%8C%AB%E5%92%AA%E4%B8%BA%E6%88%91%E8%B5%9A%E7%8C%AB%E7%B2%AE%E5%90%A7%EF%BC%81';
+            url+='&businessCode=9991111&shareType=5%22,%22actCode%22:%22%22%7D';
+            a[i].setAttribute('href', url);
+            a[i].addEventListener('click', function(e){
+                let ele=e.target;
+                if(window.localStorage.getItem(key)){
+                    ele.style.textDecoration='none';
+                    e.preventDefault();  
+                }else{
+                    if(ele.getAttribute('key')=='key0'){
+                        for(let i=0;i<a.length;i++){
+                            a[i].style.textDecoration='none';
+                            a[i].style.fontSize='24px';
+                        }
+                    }
+                    ele.style.textDecoration='line-through';
+                    ele.style.fontSize='8px';
+                    let all=0;
+                    for(let i=0;i<a.length;i++){
+                        all+=a[i].style.textDecoration=='line-through'?0:1;
+                    }
+                    if(all==0){
+                        for(let i=0;i<a.length;i++){
+                            a[i].style.textDecoration='none';
+                            a[i].style.fontSize='24px';
+                        }
+                    }
+                }
+            });
+            a[i].addEventListener('contextmenu', function(e) {
+                if (e.button === 2){
+                    e.preventDefault();
+                    contextA=e.srcElement;
+                    contextmenu.style.left = e.clientX + 'px';
+                    contextmenu.style.top = e.clientY + 'px';
+                    contextmenu.style.display = 'block';
+                    document.onclick = function(){ contextmenu.style.display='none'; }
+                }
+            });
+        }
+
+        document.querySelector('input').addEventListener('blur',function(e){
+            if(e.target.value.length>0){
+                switchA(a[parseInt(e.target.value.replace('-',''))%a.length])
+            }
+        });
+
+        function switchA(a){
+            let key=a.getAttribute('key'); 
+            if(window.localStorage.getItem(key)){
+                window.localStorage.setItem(key,'');
+                a.style.color='#333';
+                a.style.textDecoration='none';
+                contextmenu.innerHTML='启用→禁用';
+            }else{
+                window.localStorage.setItem(key,a.getAttribute('data-shareId'));
+                a.style.color=a.style.backgroundColor;
+                contextmenu.innerHTML='禁用→启用';
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+	<meta charset="utf-8">
+	<title>JSON格式化</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style type="text/css">
+        textarea{box-sizing:border-box;border:1px dashed #ccc;padding:10px;width:100%;}
+    </style>
+</head>
+<body>
+	<form method="post" action="">
+        <fieldset>
+            <legend>JSON格式化</legend>
+            <textarea name="text"></textarea> 
+        </fieldset>
+        <div id="response"></div>
+    </form>
+    <script type="text/javascript">
+        var lastValue='';
+        var textarea=document.querySelector('textarea');
+        textarea.addEventListener("blur", function(){
+            textarea.style.height=Math.min(textarea.scrollHeight,200) + 'px';
+            let value=document.querySelector('textarea[name=text]').value;
+            if(value!=lastValue){
+                lastValue=value;
+                let data=JSON.stringify(JSON.parse(lastValue), null, 4);
+                document.querySelector('#response').insertAdjacentHTML('afterbegin','<fieldset><legend>'+new Date().toISOString().substr(0,19).replace('T',' ')
+                +'</legend><textarea readonly disabled></textarea></fieldset>');
+                let responseTextarea=document.querySelector('#response textarea');
+                responseTextarea.innerHTML=data;
+                responseTextarea.style.height = responseTextarea.scrollHeight + 'px';
+                console.log(data);
+                
+            }
+        });
+    </script>
+</body>
+</html>
