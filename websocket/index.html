@@ -57,7 +57,7 @@
     });
     function sendMessage(text){
         if(text===null){
-            text='{"type":"system","from_id":"client_user","content":""}';
+            text='{"type":"system","from_id":"'+from_id+'","content":""}';
         }else{
             textarea.value='';
             div.innerHTML += '<p class="right">'+text+'<br /><span>'+new Date().toISOString().substr(11,8)+'</span></p>';
