@@ -1,0 +1,24 @@
+
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+	<meta charset="utf-8">
+	<title>Worker</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<style type="text/css">
+
+	</style>
+</head>
+<body>
+	<div></div>
+	<script>
+		const worker = new Worker('worker.js');
+		worker.onmessage = function(event){
+			document.querySelector('div').innerHTML+='收到消息：'+event.data+'<br />';
+		};
+	</script>
+	
+</body>
+</html>
+

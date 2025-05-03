@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+	<meta charset="utf-8">
+	<title>localforage</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="localforage.min.js"></script>
+</head>
+<body>
+    <div></div>
+    <script>
+        /*
+        localforage.config({
+            driver: localforage.IndexedDB, //IndexedDB,WebSQL,localStorage
+            name: 'xqk_db',//库名，默认localforage
+            version: 1.0,
+            size: 4980736, // Size of database, in bytes. WebSQL-only for now.
+            storeName: 'xqk_table', //表名
+            description: 'xqk'
+        });
+        */
+        var div=document.querySelector('div');
+        var table = localforage.createInstance({ storeName: "table" });
+        var id=1;
+        
+
+        //setItem
+        div.innerHTML+='初始编号：'+id+'<br />';
+        table.setItem('key'+id, {
+            ip:'127.0.0.1',
+            address:'本地',
+            create_time:new Date().toISOString().substr(0,19).replace('T',' ')
+        }).then(value=>{
+            div.innerHTML+='初始数据：'+JSON.stringify(value)+'<hr />';
+            let max=8,min=1;
+            return Math.floor(Math.random()*(max-min+1)+min);
+        })
+
+        //循环setItem
+        .then(function(count) {
+            div.innerHTML+='追加条数：'+count+'<br />';
+            let promises=[];
+            for(let i=1;i<=count;i++){
+                id++;
+                promises.push(table.setItem('key'+id,{
+                    ip:'192.168.1.'+i,
+                    address:'网关'+i,
+                    create_time:new Date().toISOString().substr(0,19).replace('T',' ')
+                }));
+            }
+            return Promise.all(promises);
+        }).then(function(result) {
+            div.innerHTML+='追加数据：'+JSON.stringify(result)+'<hr />';
+            return id;
+        })
+        
+        //iterate遍历
+        .then(function(currentID) {
+            div.innerHTML+='当前编号：'+currentID+'<br />';
+            return function(value, key, index){
+                div.innerHTML+='遍历主键'+index+'：'+key+'='+JSON.stringify(value)+'<br />';
+            };
+        }).then(function(func) {
+            div.innerHTML+='遍历函数：'+func+'<br />';
+            return table.iterate(function(value, key, index) {
+                func(value, key, index);
+            });
+        })
+        .then(function(promise){
+            div.innerHTML+='<hr />';
+        })
+
+        //keys
+        .then(function() {
+            div.innerHTML+='查询键值：开始<br />';
+            return table.keys();
+        }).then(function (keys) {
+            div.innerHTML+='取出键值：'+JSON.stringify(keys)+'<hr />';
+            return keys;
+        })
+
+        //key
+        .then(function(keys) {
+            let index=Math.floor(Math.random()*(keys.length)+0);
+            div.innerHTML+='随机索引：开始<br />';
+            return index;
+        }).then(function(index) {
+            div.innerHTML+='索引结果：'+index+'<hr />';
+            return index;
+        })
+
+        //getItem
+        .then(function(index) {
+            div.innerHTML+='键名索引：'+index+'<br />';
+            return table.key(index);
+        }).then(function (key) {
+            div.innerHTML+='取出键名：'+key+'<hr />';
+            return key;
+        })
+
+        //removeItem
+        .then(function(key) {
+            div.innerHTML+='移除主键：'+key+'<br />';
+            return table.removeItem(key);
+        }).then(function () {
+            div.innerHTML+='移除结果：完成<hr />';
+        })
+
+        //length
+        .then(function() {
+            div.innerHTML+='查询条数：开始<br />';
+            return table.length();
+        }).then(function(length) {
+            div.innerHTML+='得出条数：'+length+'<hr />';
+            return length;
+        })
+
+
+        //iterate再次遍历
+        .then(function(length) {
+            div.innerHTML+='遍历条数：'+length+'<br />';
+            return function(value, key, index){
+                div.innerHTML+='遍历主键'+index+'：'+key+'='+JSON.stringify(value)+'<br />';
+            };
+        }).then(function(func) {
+            div.innerHTML+='遍历函数：'+func+'<br />';
+            return table.iterate(function(value, key, index) {
+                func(value, key, index);
+            });
+        })
+        .then(function(promise){
+            div.innerHTML+='<hr />';
+        })
+
+        //清空
+        .then(function(){
+            return table.clear()
+        })
+        .then(function(){
+            div.innerHTML+='清空数据：完毕<hr />';
+        })
+         
+        //报错
+        .catch(function(err) {
+            console.log(err);
+        });
+
+    </script>
+</body>
+</html>

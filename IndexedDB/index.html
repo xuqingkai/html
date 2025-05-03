@@ -1,52 +1,52 @@
 <html>
 <head>
-  <meta charset="utf-8">
-  <title>IndexedDB</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta charset="utf-8">
+    <title>IndexedDB</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 </head>
 <body>
 <script>
 function openDB(dbName, version = 1) {
-  return new Promise((resolve, reject) => {
-    //  兼容浏览器
-    var indexedDB =
-      window.indexedDB ||
-      window.mozIndexedDB ||
-      window.webkitIndexedDB ||
-      window.msIndexedDB;
-    let db;
-    // 打开数据库，若没有则会创建
-    const request = indexedDB.open(dbName, version);
-    // 数据库打开成功回调
-    request.onsuccess = function (event) {
-      db = event.target.result; // 数据库对象
-      console.log("数据库打开成功");
-      resolve(db);
-    };
-    // 数据库打开失败的回调
-    request.onerror = function (event) {
-      console.log("数据库打开报错");
-    };
-    // 数据库有更新时候的回调
-    request.onupgradeneeded = function (event) {
-      // 数据库创建或升级的时候会触发
-      console.log("onupgradeneeded");
-      db = event.target.result; // 数据库对象
-      var objectStore;
-      // 创建存储库
-      objectStore = db.createObjectStore("signalChat", {
-        keyPath: "sequenceId", // 这是主键
-        // autoIncrement: true // 实现自增
-      });
-      // 创建索引，在后面查询数据的时候可以根据索引查
-      objectStore.createIndex("link", "link", { unique: false }); 
-      objectStore.createIndex("sequenceId", "sequenceId", { unique: false });
-      objectStore.createIndex("messageType", "messageType", {
-        unique: false,
-      });
-    };
-  });
+    return new Promise((resolve, reject) => {
+        //  兼容浏览器
+        var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
+        let db;
+        // 打开数据库，若没有则会创建
+        const request = indexedDB.open(dbName, version);
+        // 数据库打开成功回调
+        request.onsuccess = function (event) {
+            db = event.target.result; // 数据库对象
+            db.onerror = function (event1){
+                console.error("Database error: " + event1.target.errorCode);
+            };
+            console.log("数据库打开成功");
+            resolve(db);
+        };
+        // 数据库打开失败的回调
+        request.onerror = function (event) {
+            console.log("数据库打开报错");
+        };
+        // 数据库有更新时候的回调
+        request.onupgradeneeded = function (event) {
+            // 数据库创建或升级的时候会触发
+            console.log("onupgradeneeded");
+            db = event.target.result; // 数据库对象
+            var objectStore;
+            // 创建存储库
+            objectStore = db.createObjectStore("xqk_user", {
+                keyPath: "id", // 这是主键
+                autoIncrement: true // 实现自增
+            });
+            //创建索引，在后面查询数据的时候可以根据索引查
+            objectStore.createIndex("username", "username", { unique: true }); 
+            objectStore.createIndex("real_name", "real_name", { unique: false });
+            objectStore.createIndex("messageType", "messageType", {
+                unique: false,
+            });
+        };
+    });
 }
+
 </script>
 </body>
 </html>

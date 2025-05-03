@@ -3,7 +3,7 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>GitHub Pages</title>
+	<title>setTimeout</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<style type="text/css">
@@ -15,16 +15,13 @@
 	<script>
 		var t=0;
 		(function(){
-			let interval=window.setInterval(function(){
-				t+=1;
-				if(t>5){alert('5');clearInterval(interval);}
-			},1000);
-		})();
-		(function(){
-			let interval=window.setInterval(function(){
-				t+=1;
-				if(t>10){alert('10');clearInterval(interval);}
-			},1000);
+			let timeout=window.setTimeout(()=>{
+				alert('9');
+			},5000);
+			
+			window.setTimeout(()=>{
+				//clearTimeout(timeout);
+			},3000);
 		})();
 	</script>
 	

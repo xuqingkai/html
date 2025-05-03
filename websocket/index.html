@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>websocket</title>
+    <style type="text/css">
+        div{border: 1px dashed #f00;padding: 15px; overflow-y: auto; max-height: 400px;}
+        textarea{box-sizing:border-box;width: 100%;padding: 5px;height: 100px;}
+        button{width: 100%;padding:10px 0;margin: 10px 0;}
+        .left{color:#333;text-align: left;}
+        .center{color:#ccc; text-align: center;}
+        .right{color:#090; text-align: right;}
+        span{color:#ccc;}
+    </style>
+</head>
+<body>
+    <div></div>
+    <textarea placeholder="请输入消息"></textarea><br />
+    <button type="button">发送</button>
+<script>
+    const query = new URLSearchParams(window.location.search);
+    var from_id=query.get('id')??query.get('from')??query.get('fromid')??query.get('from_id')??'client_user';
+    var to_id=query.get('to')??query.get('toid')??query.get('to_id')??'server_user';
+    var div=document.querySelector("div");
+    var textarea=document.querySelector('textarea');
+    var webSocket = new WebSocket("wss://echo.websocket.org/");
+    webSocket.onerror = function (event){
+        div.innerHTML = '<p class="center">"error:'+JSON.stringify(event)+'</p>';
+    };
+    webSocket.onopen = function (event){
+        div.innerHTML = '<p class="center">【open】：'+webSocket.readyState+'，连接成功，可通讯<br /><span>'+new Date().toISOString().substr(11,8)+'</span></p>';
+        sendMessage(null);
+    };
+    webSocket.onmessage = function (event){
+        console.log('发现消息：'+event.data);
+        try{
+            let message=JSON.parse(event.data);
+            if(message){
+                if(message.type=='system'){
+                    div.innerHTML += '<p class="center">'+message.content+'<br /><span>'+new Date().toISOString().substr(11,8)+'</span></p>';
+                }else{
+                    div.innerHTML += '<p class="left">'+message.content+'<br /><span>'+new Date().toISOString().substr(11,8)+'</span></p>';
+                }
+                div.scrollTop = div.scrollHeight;
+            }
+        }catch(e){
+            div.innerHTML += '<p class="center">'+e.message+'<br /><span>'+new Date().toISOString().substr(11,8)+'</span></p>';
+        }
+    };
+    webSocket.onclose = function (event){  //服务端关闭后 触发
+        div.innerHTML = '<p  class="center">【close】：'+webSocket.readyState+'，连接已关闭或无法打开<br /><span>'+new Date().toISOString().substr(11,8)+'</span></p>';
+        webSocket.close();
+    }
+    document.querySelector('button').addEventListener('click',function(event){
+        sendMessage(textarea.value)
+    });
+    function sendMessage(text){
+        if(text===null){
+            text='{"type":"system","from_id":"client_user","content":""}';
+        }else{
+            textarea.value='';
+            div.innerHTML += '<p class="right">'+text+'<br /><span>'+new Date().toISOString().substr(11,8)+'</span></p>';
+            text='{"type":"message","from_id":"'+from_id+'","to_id":"'+to_id+'","content":'+JSON.stringify(text)+'}';
+        }
+        webSocket.send(text);
+    };
+
+    document.querySelector('textarea').addEventListener("keydown", function(event){
+        if(event.key=='Enter'){
+            sendMessage(textarea.value)
+        }
+    });
+</script>
+</body>
+</html>
